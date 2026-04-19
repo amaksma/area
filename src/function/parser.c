@@ -1,4 +1,4 @@
-#include "function_parser.h"
+#include "function/parser.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -32,6 +32,18 @@ int get_argc(const Node *self) {
 
 Node *new(void) {
     return malloc(sizeof(Node));
+}
+
+Node *deep_copy(const Node *root) {
+    assert(root);
+    Node *copy = new();
+    *copy = *root;
+    if (is_operator(copy)) {
+        for (int i = 0; i < get_argc(copy); ++i) {
+            copy->value.operator.args[i] = deep_copy(copy->value.operator.args[i]);
+        }
+    }
+    return copy;
 }
 
 Node from_immediate(double value) {
@@ -72,17 +84,6 @@ Node from_string(const char *str) {
     return from_variable(*str);
 }
 
-Node *deep_copy(const Node *root) {
-    assert(root);
-    Node *copy = new();
-    *copy = *root;
-    if (is_operator(copy)) {
-        for (int i = 0; i < get_argc(copy); ++i) {
-            copy->value.operator.args[i] = deep_copy(copy->value.operator.args[i]);
-        }
-    }
-    return copy;
-}
 
 
 
@@ -101,7 +102,7 @@ Node *construct_tree(const char *src) {
         Node *ptr = new();
         *ptr = from_string(token);
         for (int i = get_argc(ptr); i-- > 0; ) {
-            ptr->value.operator.args[i] = *(sp++);
+            ptr->value.operator.args[i] = *(sp++); // pop
         }
         *(--sp) = ptr; // push
 

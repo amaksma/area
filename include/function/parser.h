@@ -81,10 +81,10 @@ bool is_operator(const Node *self);
 int get_argc(const Node *self);
 
 Node *new(void);
+Node *deep_copy(const Node *root);
 Node from_immediate(double value);
 Node from_variable(char variable);
 Node from_operator(OperatorType type);
 Node from_string(const char *src);
-Node *deep_copy(const Node *root);
 
 #endif

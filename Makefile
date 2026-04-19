@@ -6,7 +6,7 @@ CFLAGS    = -std=c99 -Wall -Wextra -Wpedantic -Wconversion -Wimplicit-fallthroug
 LFLAGS    =
 LLIBS     = -lm
 
-SRC := main.c function_parser.c print_tree.c myutility.c
+SRC := main.c myutility.c function/parser.c function/print_tree.c
 OBJ := $(SRC:%.c=build/%.o)
 SRC := $(SRC:%=src/%)
 DEP := $(OBJ:%.o=%.d)
@@ -28,6 +28,7 @@ build/out: $(OBJ)
 
 -include $(DEP)
 build/%.o: src/%.c
+	mkdir -p $(@D)
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
 build/compile_commands.json:

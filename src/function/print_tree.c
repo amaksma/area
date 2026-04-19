@@ -1,7 +1,8 @@
-#include "print_tree.h"
+#include "function/print_tree.h"
+
 #include <stdio.h>
 #include <string.h>
-#include "function_parser.h"
+#include "function/parser.h"
 
 static char *print_tree_internal(const char *print_buf, char *buffer, const Node *root, int depth, const char *cline);
 

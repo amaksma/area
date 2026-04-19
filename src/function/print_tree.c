@@ -12,7 +12,7 @@ void print_tree(const Node *root) {
     fputs(print_buf, stdout);
 }
 
-#define BOX_WIDTH 50
+#define BOX_WIDTH 80
 char *print_tree_internal(const char *print_buf, char *buffer, const Node *root, int depth, const char *cline) {
     if (!root) {
         buffer[0] = 0;

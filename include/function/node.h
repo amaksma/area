@@ -76,4 +76,6 @@ Node *from_immediate(double value);
 Node *from_variable(char variable);
 Node *from_operator(OperatorType type);
 
+Node *substitute_variable(Node *root, const Node *src, char variable);
+
 #endif

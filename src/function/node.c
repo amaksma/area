@@ -31,10 +31,8 @@ Node *deep_copy(const Node *root) {
     assert(root);
     Node *copy = new();
     *copy = *root;
-    if (is_operator(copy)) {
-        for (int i = 0; i < get_argc(copy); ++i) {
-            copy->value.operator.args[i] = deep_copy(copy->value.operator.args[i]);
-        }
+    for (int i = 0; i < get_argc(copy); ++i) {
+        copy->value.operator.args[i] = deep_copy(copy->value.operator.args[i]);
     }
     return copy;
 }
@@ -64,4 +62,16 @@ Node *from_operator(OperatorType type) {
         .value.operator.type = type
     };
     return ptr;
+}
+
+Node *substitute_variable(Node *root, const Node *src, char variable) {
+    assert(root && src);
+    for (int i = 0; i < get_argc(root); ++i) {
+        root->value.operator.args[i] = substitute_variable(root->value.operator.args[i], src, variable);
+    }
+    if (is_variable(root) && root->value.variable == variable) {
+        free(root);
+        root = deep_copy(src);
+    }
+    return root;
 }

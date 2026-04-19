@@ -7,67 +7,7 @@
 #include "myutility.h"
 
 
-
-
-const OperatorInfo *get_info(OperatorType type) {
-    return &op_info[type];
-}
-
-bool is_constant(const Node *self) {
-    return self->type == NODE_IMMEDIATE;
-}
-
-bool is_variable(const Node *self) {
-    return self->type == NODE_VARIABLE;
-}
-
-bool is_operator(const Node *self) {
-    return self->type == NODE_OPERATOR;
-}
-
-int get_argc(const Node *self) {
-    return is_operator(self) ? get_info(self->value.operator.type)->argc : 0;
-}
-
-
-Node *new(void) {
-    return malloc(sizeof(Node));
-}
-
-Node *deep_copy(const Node *root) {
-    assert(root);
-    Node *copy = new();
-    *copy = *root;
-    if (is_operator(copy)) {
-        for (int i = 0; i < get_argc(copy); ++i) {
-            copy->value.operator.args[i] = deep_copy(copy->value.operator.args[i]);
-        }
-    }
-    return copy;
-}
-
-Node from_immediate(double value) {
-    return (Node) {
-        .type = NODE_IMMEDIATE,
-        .value.immediate = value
-    };
-}
-
-Node from_variable(char variable) {
-    return (Node) {
-        .type = NODE_VARIABLE,
-        .value.variable = variable
-    };
-}
-
-Node from_operator(OperatorType type) {
-    return (Node) {
-        .type = NODE_OPERATOR,
-        .value.operator.type = type
-    };
-}
-
-Node from_string(const char *str) {
+Node *from_string(const char *str) {
     assert(str);
     double value;
     if (sscanf(str, "%lf", &value) == 1) {
@@ -84,10 +24,6 @@ Node from_string(const char *str) {
     return from_variable(*str);
 }
 
-
-
-
-
 Node *construct_tree(const char *src) {
     assert(src);
     char *str = malloc((strlen(src) + 1) * sizeof(*src));
@@ -99,8 +35,7 @@ Node *construct_tree(const char *src) {
     
     char *token = strtok(str, " ");
     while (token) {
-        Node *ptr = new();
-        *ptr = from_string(token);
+        Node *ptr = from_string(token);
         for (int i = get_argc(ptr); i-- > 0; ) {
             ptr->value.operator.args[i] = *(sp++); // pop
         }

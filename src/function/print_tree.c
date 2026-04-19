@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "function/parser.h"
+#include "function/node.h"
 
 static char *print_tree_internal(const char *print_buf, char *buffer, const Node *root, int depth, const char *cline);
 
@@ -42,7 +42,7 @@ char *print_tree_internal(const char *print_buf, char *buffer, const Node *root,
         dst += sprintf(dst, "%-5.2lf", root->value.immediate);
         break;
     case NODE_VARIABLE:
-        dst += sprintf(dst, "x");
+        dst += sprintf(dst, "%c", root->value.variable);
         break;
     case NODE_OPERATOR:
         dst += sprintf(dst, "%s", get_info(root->value.operator.type)->name);

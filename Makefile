@@ -1,4 +1,4 @@
-.PHONY: all clean analyze
+.PHONY: all clean
 
 CC        = clang
 CPPFLAGS  = -I include
@@ -21,7 +21,7 @@ else
 endif
 
 
-all: build build/out build/compile_commands.json
+all: build/out build/compile_commands.json
 
 build/out: $(OBJ)
 	$(CC) $(LFLAGS) $(OBJ) $(LLIBS) -o $@
@@ -32,10 +32,7 @@ build/%.o: src/%.c
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $< -o $@
 
 build/compile_commands.json:
-	(echo "["; cat build/*.o.json; echo "]") > $@
-
-build:
-	mkdir $@
+	(echo "["; cat $(@D)/*.o.json; echo "]") > $@
 
 clean:
 	rm -rf ./build

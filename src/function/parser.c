@@ -57,4 +57,3 @@ void destruct_tree(Node *root) {
     }
     free(root);
 }
-

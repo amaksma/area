@@ -7,6 +7,11 @@ const OperatorInfo *get_info(OperatorType type) {
 }
 
 bool is_constant(const Node *self) {
+    return self->type == NODE_IMMEDIATE
+        || (self->type == NODE_OPERATOR && get_argc(self) == 0);
+}
+
+bool is_immediate(const Node *self) {
     return self->type == NODE_IMMEDIATE;
 }
 
@@ -23,45 +28,40 @@ int get_argc(const Node *self) {
 }
 
 
-Node *new(void) {
-    return malloc(sizeof(Node));
+Node *new(Node node) {
+    Node *ptr = malloc(sizeof(Node));
+    *ptr = node;
+    return ptr;
 }
 
 Node *deep_copy(const Node *root) {
     assert(root);
-    Node *copy = new();
-    *copy = *root;
+    Node *copy = new(*root);
     for (int i = 0; i < get_argc(copy); ++i) {
         copy->value.operator.args[i] = deep_copy(copy->value.operator.args[i]);
     }
     return copy;
 }
 
-Node *from_immediate(double value) {
-    Node *ptr = new();
-    *ptr = (Node) {
+Node from_immediate(double value) {
+    return (Node) {
         .type = NODE_IMMEDIATE,
         .value.immediate = value
     };
-    return ptr;
 }
 
-Node *from_variable(char variable) {
-    Node *ptr = new();
-    *ptr = (Node) {
+Node from_variable(char variable) {
+    return (Node) {
         .type = NODE_VARIABLE,
         .value.variable = variable
     };
-    return ptr;
 }
 
-Node *from_operator(OperatorType type) {
-    Node *ptr = new();
-    *ptr = (Node) {
+Node from_operator(OperatorType type) {
+    return (Node) {
         .type = NODE_OPERATOR,
         .value.operator.type = type
     };
-    return ptr;
 }
 
 Node *substitute_variable(Node *root, const Node *src, char variable) {

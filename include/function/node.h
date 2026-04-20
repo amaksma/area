@@ -66,15 +66,16 @@ static const OperatorInfo op_info[] = {
 const OperatorInfo *get_info(OperatorType type);
 
 bool is_constant(const Node *self);
+bool is_immediate(const Node *self);
 bool is_variable(const Node *self);
 bool is_operator(const Node *self);
 int get_argc(const Node *self);
 
-Node *new(void);
+Node *new(Node node);
 Node *deep_copy(const Node *root);
-Node *from_immediate(double value);
-Node *from_variable(char variable);
-Node *from_operator(OperatorType type);
+Node from_immediate(double value);
+Node from_variable(char variable);
+Node from_operator(OperatorType type);
 
 Node *substitute_variable(Node *root, const Node *src, char variable);
 

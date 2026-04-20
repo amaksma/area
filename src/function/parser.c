@@ -11,17 +11,17 @@ Node *from_string(const char *str) {
     assert(str);
     double value;
     if (sscanf(str, "%lf", &value) == 1) {
-        return from_immediate(value);
+        return new(from_immediate(value));
     }
     
     for (OperatorType type = 0; type < NUM_OPERATORS; ++type) {
         if (strcmp(str, get_info(type)->name) == 0) {
-            return from_operator(type);
+            return new(from_operator(type));
         }
     }
 
     assert(str[1] == 0);
-    return from_variable(*str);
+    return new(from_variable(*str));
 }
 
 Node *construct_tree(const char *src) {

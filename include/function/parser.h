@@ -13,6 +13,6 @@ Node *construct_tree(const char *str);
 void destruct_tree(Node *root);
 
 // Constructs a node from a string
-Node *from_string(const char *src);
+Node from_string(const char *src);
 
 #endif

@@ -59,7 +59,7 @@ static const OperatorInfo op_info[] = {
     (OperatorInfo) {2, "+",   "f g +",                  "faddp"              },
     (OperatorInfo) {2, "-",   "f g -",                  "fsubp"              },
     (OperatorInfo) {2, "*",   "f G * F g * +",          "fmulp"              },
-    (OperatorInfo) {2, "/",   "f G * F g * - G G * /",  "fdivp"              },
+    (OperatorInfo) {2, "/",   "f G / F g * G G * / -",  "fdivp"              },
 };
 
 // Get the information about the operator

@@ -2,6 +2,20 @@
 #include <assert.h>
 #include <stdlib.h>
 
+
+const OperatorInfo op_info[] = {
+    (OperatorInfo) {0, "pi",  "0",                      "fldpi"              },
+    (OperatorInfo) {0, "e",   "0",                      "fld qword [e]"      },
+    (OperatorInfo) {1, "sin", "f F cos *",              "fsin"               },
+    (OperatorInfo) {1, "cos", "f -1 * F sin *",         "fcos"               },
+    (OperatorInfo) {1, "tan", "f F cos F cos * /",      "fptan:fstp st0"     },
+    (OperatorInfo) {1, "ctg", "f -1 * F sin F sin * /", "fptan:fdivrp"       },
+    (OperatorInfo) {2, "+",   "f g +",                  "faddp"              },
+    (OperatorInfo) {2, "-",   "f g -",                  "fsubp"              },
+    (OperatorInfo) {2, "*",   "f G * F g * +",          "fmulp"              },
+    (OperatorInfo) {2, "/",   "f G / F g * G G * / -",  "fdivp"              },
+};
+
 const OperatorInfo *get_info(OperatorType type) {
     return &op_info[type];
 }

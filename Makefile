@@ -6,7 +6,7 @@ CFLAGS    = -std=c99 -Wall -Wextra -Wpedantic -Wconversion -Wimplicit-fallthroug
 LFLAGS    =
 LLIBS     = -lm
 
-SRC := main.c myutility.c function/node.c function/parser.c function/print_tree.c function/derivative.c function/simplify.c
+SRC := main.c myutility.c function/node.c function/parser.c function/print_tree.c function/derivative.c function/simplify.c vector.c
 OBJ := $(SRC:%.c=build/%.o)
 SRC := $(SRC:%=src/%)
 DEP := $(OBJ:%.o=%.d)

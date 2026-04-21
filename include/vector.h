@@ -2,9 +2,10 @@
 #define VECTOR_H
 
 #include <stddef.h>
+#include "array.h"
 
-#define DESTRUCT_VALUE(VALUE)
-typedef int T;
+#define DESTRUCT_VALUE(VALUE) array_destruct(VALUE)
+typedef ArrayDouble T;
 
 typedef struct {
     size_t capacity;

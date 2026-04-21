@@ -3,6 +3,7 @@
 
 #include "function/node.h"
 
+// Simplifies the expression tree
 Node *simplify(Node *root);
 
 #endif

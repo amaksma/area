@@ -30,6 +30,7 @@ typedef enum {
 #define NUM_OPERATORS ((size_t)(OP_DIV + 1))
 
 
+// Expression node
 typedef struct node {
     NodeType type;
     union {
@@ -49,6 +50,7 @@ typedef struct {
     char asm_code[128];
 } OperatorInfo;
 
+// Information about the operators
 static const OperatorInfo op_info[] = {
     (OperatorInfo) {0, "pi",  "0",                      "fldpi"              },
     (OperatorInfo) {0, "e",   "0",                      "fld qword [e]"      },
@@ -65,10 +67,15 @@ static const OperatorInfo op_info[] = {
 // Get the information about the operator
 const OperatorInfo *get_info(OperatorType type);
 
+// Checks if the node is an immediate value or a zero-operand operator
 bool is_constant(const Node *self);
+// Checks if the node is an immediate value
 bool is_immediate(const Node *self);
+// Checks if the node is a variable
 bool is_variable(const Node *self);
+// Checks if the node is an operator
 bool is_operator(const Node *self);
+// Get the number of operands
 int get_argc(const Node *self);
 
 Node *new(Node node);

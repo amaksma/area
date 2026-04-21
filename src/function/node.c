@@ -37,6 +37,7 @@ Node *new(Node node) {
 Node *deep_copy(const Node *root) {
     assert(root);
     Node *copy = new(*root);
+    // Recursively copy the child nodes
     for (int i = 0; i < get_argc(copy); ++i) {
         copy->value.operator.args[i] = deep_copy(copy->value.operator.args[i]);
     }
@@ -69,6 +70,7 @@ Node *substitute_variable(Node *root, const Node *src, char variable) {
     for (int i = 0; i < get_argc(root); ++i) {
         root->value.operator.args[i] = substitute_variable(root->value.operator.args[i], src, variable);
     }
+    // Replace the variable node with the copy of the provided tree
     if (is_variable(root) && root->value.variable == variable) {
         free(root);
         root = deep_copy(src);

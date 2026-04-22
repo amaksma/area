@@ -1,7 +1,9 @@
-#include "root/newton.h"
+#include "root.h"
 #include "myutility.h"
 
 int root_itrs = 0;
+
+#ifdef NEWTON
 double root(
     func_t f, func_t dfdx,
     func_t g, func_t dgdx,
@@ -20,3 +22,25 @@ double root(
 
     return value;
 }
+#else
+double root(
+    func_t f, func_t g,
+    double a, double b,
+    double eps1
+) {
+    root_itrs = 0;
+    if (abslf(f(a) - g(a)) < eps1) { return a; }
+    if (abslf(f(b) - g(b)) < eps1) { return b; }
+    while ((b - a) > eps1) {
+        double middle = (a + b) / 2;
+        if ((f(a) - g(a)) * (f(middle) - g(middle)) < 0) {
+            b = middle;
+        }
+        else {
+            a = middle;
+        }
+        ++root_itrs;
+    }
+    return (a + b) / 2;
+}
+#endif

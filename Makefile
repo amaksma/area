@@ -8,18 +8,26 @@ LLIBS     = -lm
 
 SRC := main.c myutility.c
 SRC += function/node.c function/parser.c function/print_tree.c function/derivative.c function/simplify.c
-SRC += vector.c array.c root/newton.c integral/square_vec.c integral/simpson.c
+SRC += vector.c array.c root.c integral/square_vec.c integral/simpson.c
 OBJ := $(SRC:%.c=build/%.o)
 SRC := $(SRC:%=src/%)
 DEP := $(OBJ:%.o=%.d)
 
 TYPE ?= Debug
-ifeq ($(TYPE),Debug)
+ifeq ($(TYPE), Debug)
 	CPPFLAGS += -DDEBUG
 	CFLAGS   += -g3 -fsanitize=address,undefined,leak -fno-omit-frame-pointer
 	LFLAGS   += -g3 -fsanitize=address,undefined,leak
-else
+endif
+ifeq ($(TYPE), Release)
 	CPPFLAGS += -DNDEBUG
+	CFLAGS   += -O2
+	LFLAGS   += -O2
+endif
+
+METHOD ?= Newton
+ifeq ($(METHOD), Newton)
+	CPPFLAGS += -DNEWTON
 endif
 
 

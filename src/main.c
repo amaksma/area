@@ -6,7 +6,7 @@
 #include "integral/square_vec.h"
 #include "integral/simpson.h"
 #include "myutility.h"
-#include "root/newton.h"
+#include "root.h"
 #include "vector.h"
 #include "array.h"
 #include <math.h>
@@ -35,9 +35,11 @@ double f1(double x) { return exp(x) + 2.0; }
 double f2(double x) { return -1.0 / x; }
 double f3(double x) { return -2.0 * (x + 1.0) / 3.0; }
 
+#ifdef NEWTON
 double df1dx(double x) { return exp(x); }
 double df2dx(double x) { return 1.0 / (x * x); }
 double df3dx(double x) { return -2.0 / 3.0; }
+#endif
 
 int main1232(void) {
     Node *root = construct_tree("x x x * 5 - 1000 / - x x * sin + 2 -");
@@ -109,36 +111,38 @@ int main(int argc, char *argv[]) {
     double eps = 0.001;
     double eps2 = eps / 3;
     double eps1 = eps2 / 2 / 3;
-    double a, b;
 
-    func_t f, g, dfdx, dgdx;
+    double a12 = -2, b12 = -eps2;
+    double a13 = -5, b13 = -3;
+    double a23 = -5, b23 = -eps2;
+    int root_itrs12, root_itrs13, root_itrs23;
 
-    a = -2; b = 2;
-    f = f1; g = f2; dfdx = df1dx; dgdx = df2dx;
-    double x12 = root(f, dfdx, g, dgdx, a, b, eps1);
+    
+#ifdef NEWTON
+    double x12 = root(f1, df1dx, f2, df2dx, a12, b12, eps1);
+    root_itrs12 = root_itrs;
+    double x13 = root(f1, df1dx, f3, df3dx, a13, b13, eps1);
+    root_itrs13 = root_itrs;
+    double x23 = root(f2, df2dx, f3, df3dx, a23, b23, eps1);
+    root_itrs23 = root_itrs;
+#else
+    double x12 = root(f1, f2, a12, b12, eps1);
+    root_itrs12 = root_itrs;
+    double x13 = root(f1, f3, a13, b13, eps1);
+    root_itrs13 = root_itrs;
+    double x23 = root(f2, f3, a23, b23, eps1);
+    root_itrs23 = root_itrs;
+#endif
+
     if (print_roots) {
         printf("x12 = %f\n", x12);
-    }
-    if (print_root_itrs) {
-        printf("iterations to calculate x12: %d\n", root_itrs);
-    }
-
-    a = -5; b = -3;
-    f = f1; g = f3; dfdx = df1dx; dgdx = df3dx;
-    double x13 = root(f, dfdx, g, dgdx, a, b, eps1);
-    if (print_roots)
         printf("x13 = %f\n", x13);
-    if (print_root_itrs) {
-        printf("iterations to calculate x13: %d\n", root_itrs);
-    }
-
-    a = -5; b = -eps2;
-    f = f2; g = f3; dfdx = df2dx; dgdx = df3dx;
-    double x23 = root(f, dfdx, g, dgdx, a, b, eps1);
-    if (print_roots)
         printf("x23 = %f\n", x23);
+    }
     if (print_root_itrs) {
-        printf("iterations to calculate x23: %d\n", root_itrs);
+        printf("Iterations to calculate x12: %d\n", root_itrs12);
+        printf("Iterations to calculate x13: %d\n", root_itrs13);
+        printf("Iterations to calculate x23: %d\n", root_itrs23);
     }
 
 
@@ -158,16 +162,11 @@ int main(int argc, char *argv[]) {
     if (edge_second == edge_mid || edge_second == edge_first) { edge_second = &edge2; }
     if (edge_second == edge_mid || edge_second == edge_first) { edge_second = &edge3; }
 
-    //time_t start = clock();
     double I1 = integral(edge_first->f, edge_first->a, edge_first->b, eps2);
     double I2 = integral(edge_second->f, edge_second->a, edge_second->b, eps2);
     double I3 = integral(edge_mid->f, edge_mid->a, edge_mid->b, eps2);
-    //time_t end = clock();
 
-    //printf("%ld\n", end - start);
-
-
-    double I = abslf(I3 - I1 - I2);
+    double I = abslf(I1 + I2 - I3);
 
     //printf("%f %f %f\n", I1, I2, I3);
     printf("%f\n", I);

@@ -5,8 +5,8 @@ int root_itrs = 0;
 
 #ifdef NEWTON
 double root(
-    func_t f, func_t dfdx,
-    func_t g, func_t dgdx,
+    func_t f, func_t g,
+    func_t dfdx, func_t dgdx,
     double a, double b,
     double eps1
 ) {

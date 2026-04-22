@@ -25,11 +25,11 @@ double area(
     int root_itrs12, root_itrs13, root_itrs23;
     
 #ifdef NEWTON
-    double x12 = root(f1, df1dx, f2, df2dx, a12, b12, eps1);
+    double x12 = root(f1, f2, df1dx, df2dx, a12, b12, eps1);
     root_itrs12 = root_itrs;
-    double x13 = root(f1, df1dx, f3, df3dx, a13, b13, eps1);
+    double x13 = root(f1, f3, df1dx, df3dx, a13, b13, eps1);
     root_itrs13 = root_itrs;
-    double x23 = root(f2, df2dx, f3, df3dx, a23, b23, eps1);
+    double x23 = root(f2, f3, df2dx, df3dx, a23, b23, eps1);
     root_itrs23 = root_itrs;
 #else
     double x12 = root(f1, f2, a12, b12, eps1);

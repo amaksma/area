@@ -7,8 +7,8 @@ extern int root_itrs;
 #ifdef NEWTON
 // Searches for the root of the difference between f and g using Newton's method
 double root(
-    func_t f, func_t dfdx,
-    func_t g, func_t dgdx,
+    func_t f, func_t g,
+    func_t dfdx, func_t dgdx,
     double a, double b,
     double eps1
 );

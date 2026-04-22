@@ -73,21 +73,17 @@ int main(int argc, char *argv[]) {
             int f_num, g_num;
             double a, b, eps;
             scanf("%d %d %lf %lf %lf", &f_num, &g_num, &a, &b, &eps);
-#ifdef NEWTON
+
             double x = root(
                 f_num == 1 ? f1 : f_num == 2 ? f2 : f3,
-                f_num == 1 ? df1dx : f_num == 2 ? df2dx : df3dx,
                 g_num == 1 ? f1 : g_num == 2 ? f2 : f3,
+#ifdef NEWTON
+                f_num == 1 ? df1dx : f_num == 2 ? df2dx : df3dx,
                 g_num == 1 ? df1dx : g_num == 2 ? df2dx : df3dx,
-                a, b, eps
-            );
-#else
-            double x = root(
-                f_num == 1 ? f1 : f_num == 2 ? f2 : f3,
-                f_num == 1 ? f1 : f_num == 2 ? f2 : f3,
-                a, b, eps
-            );
 #endif
+                a, b, eps
+            );
+
             printf("root = %lf\n", x);
             if (print_root_itrs) {
                 printf("Iterations: %d\n", root_itrs);

@@ -108,6 +108,50 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    if (test) {
+        fputs(
+            "Switched to testing mode.\n"
+            "Write 'q' to exit the testing mode.\n"
+            "Write 'r' to test the root search.\n",
+            stdout
+        );
+    }
+    while (test) {
+        char cmd[2];
+        scanf("%1s", cmd);
+        switch (*cmd) {
+        case 'r': {
+            fputs("Input format: <first func number> <second func number> <beginning of the segment> <end of the segment> <epsilon>\n", stdout);
+            int f_num, g_num;
+            double a, b, eps;
+            scanf("%d %d %lf %lf %lf", &f_num, &g_num, &a, &b, &eps);
+#ifdef NEWTON
+            double x = root(
+                f_num == 1 ? f1 : f_num == 2 ? f2 : f3,
+                f_num == 1 ? df1dx : f_num == 2 ? df2dx : df3dx,
+                g_num == 1 ? f1 : g_num == 2 ? f2 : f3,
+                g_num == 1 ? df1dx : g_num == 2 ? df2dx : df3dx,
+                a, b, eps
+            );
+#else
+            double x = root(
+                f_num == 1 ? f1 : f_num == 2 ? f2 : f3,
+                f_num == 1 ? f1 : f_num == 2 ? f2 : f3,
+                a, b, eps
+            );
+#endif
+            printf("root = %lf\n", x);
+            if (print_root_itrs) {
+                printf("Iterations: %d\n", root_itrs);
+            }
+            break;
+        }
+        case 'q':
+            test = false;
+            break;
+        }
+    }
+
     double eps = 0.001;
     double eps2 = eps / 3;
     double eps1 = eps2 / 2 / 3;

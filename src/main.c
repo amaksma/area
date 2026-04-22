@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "area.h"
-#include "integral/simpson.h"
+#include "integral.h"
 #include "root.h"
 
 

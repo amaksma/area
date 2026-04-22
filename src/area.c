@@ -1,5 +1,5 @@
 #include "area.h"
-#include "integral/simpson.h"
+#include "integral.h"
 #include "root.h"
 #include <stdio.h>
 #include <stdbool.h>

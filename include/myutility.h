@@ -13,9 +13,6 @@ typedef double (*func_t)(double);
 // Counts the number of occurrences of a character in a string
 size_t count_chars(const char *str, char ch);
 
-// Counts the number of trailing zeros
-unsigned trailing_zeros(uint32_t value);
-
 double abslf(double value);
 double minlf(double a, double b);
 double maxlf(double a, double b);

@@ -1,29 +1,12 @@
-#include "function/derivative.h"
-#include "function/node.h"
-#include "function/parser.h"
-#include "function/print_tree.h"
-#include "function/simplify.h"
-#include "integral/square_vec.h"
-#include "integral/simpson.h"
-#include "myutility.h"
-#include "root.h"
-#include "vector.h"
-#include "array.h"
 #include <math.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
+#include "integral/simpson.h"
+#include "myutility.h"
+#include "root.h"
 
-void print_vec(Vector *self) {
-    size_t len = 0;
-    for (size_t i = 0; i < self->length; ++i) {
-        len += vec_at(self, i)->size;
-    }
-    for (size_t i = 0; i < len; ++i) {
-        printf("%.2lf ", vec_at_array(self, i));
-    }
-    fputc('\n', stdout);
-}
 
 typedef struct {
     double a, b;
@@ -41,40 +24,6 @@ double df2dx(double x) { return 1.0 / (x * x); }
 double df3dx(double x) { return -2.0 / 3.0; }
 #endif
 
-int main1232(void) {
-    Node *root = construct_tree("x x x * 5 - 1000 / - x x * sin + 2 -");
-    print_tree(root);
-
-    Node *droot = derivative(root, 'x');
-
-    print_tree(droot);
-    droot = simplify(droot);
-    print_tree(droot);
-    destruct_tree(droot);
-    destruct_tree(root);
-
-    Vector vec = vec_from_capacity(10);
-    size_t n = 2;
-    ArrayDouble arr1 = array_from_size(3);
-    arr1.data[0] = 0;
-    arr1.data[1] = 4;
-    arr1.data[2] = 8;
-    vec_push(&vec, arr1);
-    print_vec(&vec);
-    while (1) {
-        ArrayDouble a = array_from_size(n);
-        for (size_t i = 0; i < n; ++i) {
-            scanf("%lf", &a.data[i]);
-        }
-        vec_push(&vec, a);
-        print_vec(&vec);
-        n *= 2;
-    }
-    vec_destruct(&vec);
-    
-
-    return 0;
-}
 
 int main(int argc, char *argv[]) {
     // Handling of the command line arguments
@@ -110,13 +59,15 @@ int main(int argc, char *argv[]) {
 
     if (test) {
         fputs(
-            "Switched to testing mode.\n"
-            "Write 'q' to exit the testing mode.\n"
-            "Write 'r' to test the root search.\n",
+            "Switched to testing mode\n"
+            "Write 'q' to exit the testing mode\n"
+            "Write 'r' to test the root search\n"
+            "Write 'i' to test the integral calculation\n",
             stdout
         );
     }
     while (test) {
+        fputs("command: ", stdout);
         char cmd[2];
         scanf("%1s", cmd);
         switch (*cmd) {
@@ -144,6 +95,15 @@ int main(int argc, char *argv[]) {
             if (print_root_itrs) {
                 printf("Iterations: %d\n", root_itrs);
             }
+            break;
+        }
+        case 'i': {
+            fputs("Input format: <function number> <beginning of the segment> <end of the segment> <epsilon>\n", stdout);
+            int f_num;
+            double a, b, eps;
+            scanf("%d %lf %lf %lf", &f_num, &a, &b, &eps);
+            double I = integral(f_num == 1 ? f1 : f_num == 2 ? f2 : f3, a, b, eps);
+            printf("I = %lf\n", I);
             break;
         }
         case 'q':
@@ -211,8 +171,6 @@ int main(int argc, char *argv[]) {
     double I3 = integral(edge_mid->f, edge_mid->a, edge_mid->b, eps2);
 
     double I = abslf(I1 + I2 - I3);
-
-    //printf("%f %f %f\n", I1, I2, I3);
     printf("%f\n", I);
 
     return 0;

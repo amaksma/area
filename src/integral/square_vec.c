@@ -21,3 +21,17 @@ void vec_calculate_array(Vector *self, func_t f, double start, double delta, siz
     }
     vec_push(self, array);
 }
+
+/*
+#include <stdio.h>
+static void print_vec(Vector *self) {
+    size_t len = 0;
+    for (size_t i = 0; i < self->length; ++i) {
+        len += vec_at(self, i)->size;
+    }
+    for (size_t i = 0; i < len; ++i) {
+        printf("%.2lf ", vec_at_array(self, i));
+    }
+    fputc('\n', stdout);
+}
+*/

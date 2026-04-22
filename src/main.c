@@ -6,6 +6,7 @@
 #include "area.h"
 #include "integral.h"
 #include "root.h"
+#include "test.h"
 
 
 
@@ -59,7 +60,8 @@ int main(int argc, char *argv[]) {
             "Switched to testing mode\n"
             "Write 'q' to exit the testing mode\n"
             "Write 'r' to test the root search\n"
-            "Write 'i' to test the integral calculation\n",
+            "Write 'i' to test the integral calculation\n"
+            "Write 't' to execute the automatic tests\n",
             stdout
         );
     }
@@ -99,6 +101,9 @@ int main(int argc, char *argv[]) {
             printf("I = %lf\n", I);
             break;
         }
+        case 't':
+            test_calculation();
+            break;
         case 'q':
             test = false;
             break;

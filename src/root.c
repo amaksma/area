@@ -31,7 +31,7 @@ double root(
     root_itrs = 0;
     if (abslf(f(a) - g(a)) < eps1) { return a; }
     if (abslf(f(b) - g(b)) < eps1) { return b; }
-    while ((b - a) > eps1) {
+    while ((b - a) >= eps1) {
         double middle = (a + b) / 2;
         if ((f(a) - g(a)) * (f(middle) - g(middle)) < 0) {
             b = middle;

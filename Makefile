@@ -8,7 +8,7 @@ LLIBS     = -lm
 
 SRC := main.c myutility.c
 SRC += function/node.c function/parser.c function/print_tree.c function/derivative.c function/simplify.c
-SRC += root.c integral.c area.c
+SRC += root.c integral.c area.c test.c
 OBJ := $(SRC:%.c=build/%.o)
 SRC := $(SRC:%=src/%)
 DEP := $(OBJ:%.o=%.d)

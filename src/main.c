@@ -24,6 +24,7 @@ double df3dx(double x) { return -2.0 / 3.0; }
 
 
 int main(int argc, char *argv[]) {
+    test_calculation();
     // Handling of the command line arguments
     const char arg_help[] = "-help";
     const char arg_roots[] = "-roots";
@@ -60,8 +61,7 @@ int main(int argc, char *argv[]) {
             "Switched to testing mode\n"
             "Write 'q' to exit the testing mode\n"
             "Write 'r' to test the root search\n"
-            "Write 'i' to test the integral calculation\n"
-            "Write 't' to execute the automatic tests\n",
+            "Write 'i' to test the integral calculation\n",
             stdout
         );
     }
@@ -101,9 +101,6 @@ int main(int argc, char *argv[]) {
             printf("I = %lf\n", I);
             break;
         }
-        case 't':
-            test_calculation();
-            break;
         case 'q':
             test = false;
             break;

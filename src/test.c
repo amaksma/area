@@ -1,28 +1,30 @@
 #include "test.h"
-#include "integral.h"
 #include "myutility.h"
+#include "integral.h"
 #include "root.h"
+#include "area.h"
+#include <assert.h>
 #include <math.h>
-#include <stdio.h>
 
-double test_f1(double x) {
+
+static double f1(double x) {
     return exp(x) - exp(x * x - 5) / 1000.0 + sin(x * x) - 2;
 }
-double test_f2(double x) {
+static double f2(double x) {
     return sin(x * x) * cos(x) + x;
 }
-double test_f3(double x) {
+static double f3(double x) {
     return (x == 0 ? 0 : log(sin(abslf(x))) * tan(x) / log(10)) - 0.25;
 }
 
 #ifdef NEWTON
-double test_df1dx(double x) {
+static double df1dx(double x) {
     return exp(x) - x * exp(x * x - 5) / 500.0 + 2 * x * cos(x * x);
 }
-double test_df2dx(double x) {
+static double df2dx(double x) {
     return 2 * x * cos(x) * cos(x * x) - sin(x) * sin(x * x) + 1;
 }
-double test_df3dx(double x) {
+static double df3dx(double x) {
     return x * tan(x) / (abslf(x) * tan(abslf(x))) + log(sin(abslf(x))) / (cos(x) * cos(x));
 }
 #endif
@@ -30,46 +32,60 @@ double test_df3dx(double x) {
 
 void test_calculation(void) {
     // Roots
-    double test_r12 = -1.12908, test_r13 = 0.36754, test_r23 = -0.14775;
+    double expected_x12 = -1.1290793957594790364306327, expected_x13 = 0.367539900645641914785130356, expected_x23 = -0.147751873920642938090099763;
 
     // Integrals
-    double test_i1 = -1.42897047728, test_i2 = -0.346768586812, test_i3 = -0.162565457722;
+    double expected_I1 = -1.4289838058025445681963979, expected_I2 = -0.3467679152384785995901733, expected_I3 = 0.16256565271856085;
+    double expected_I = abslf(expected_I1) - abslf(expected_I2) - abslf(expected_I3);
 
-    double eps = 0.001;
+    double eps = 0.00000001;
     double eps2 = eps / 3;
-    double eps1 = eps2 / 2 / 3;
+    double eps1 = eps2 / 2 / (f2(expected_x23) - f2(expected_x12));
+
+    double a12 = -1.5, b12 = -0.8;
+    double a13 = -0.3, b13 = 2;
+    double a23 = -1, b23 = 1;
     
 
     double x12 = root(
-        test_f1, test_f2,
+        f1, f2,
 #ifdef NEWTON
-        test_df1dx, test_df2dx,
+        df1dx, df2dx,
 #endif
-        -1.5, -0.8, eps1
+        a12, b12, eps1
     );
     double x13 = root(
-        test_f1, test_f3,
+        f1, f3,
 #ifdef NEWTON
-        test_df1dx, test_df3dx,
+        df1dx, df3dx,
 #endif
-        -0.3, 2, eps1
+        a13, b13, eps1
     );
-    double x23 = root(test_f2, test_f3,
+    double x23 = root(f2, f3,
 #ifdef NEWTON
-        test_df2dx, test_df3dx,
+        df2dx, df3dx,
 #endif
-        -1, 1, eps1
+        a23, b23, eps1
     );
 
-    printf("expected: %lf\n    x12 = %lf\n", test_r12, x12);
-    printf("expected: %lf\n    x13 = %lf\n", test_r13, x13);
-    printf("expected: %lf\n    x23 = %lf\n", test_r23, x23);
 
-    double I1 = integral(test_f1, x12, x13, eps2);
-    double I2 = integral(test_f2, x12, x23, eps2);
-    double I3 = integral(test_f3, x23, x13, eps2);
+    double I1 = integral(f1, x12, x13, eps2);
+    double I2 = integral(f2, x12, x23, eps2);
+    double I3 = integral(f3, x13, x23, eps2);
 
-    printf("expected: %lf\n     I1 = %lf\n", test_i1, I1);
-    printf("expected: %lf\n     I2 = %lf\n", test_i2, I2);
-    printf("expected: %lf\n     I3 = %lf\n", test_i3, I3);
+    double I = area(
+        f1, f2, f3,
+#ifdef NEWTON
+        df1dx, df2dx, df3dx,
+#endif
+        a12, b12, a13, b13, a23, b23, eps, false, false
+    );
+
+    assert(abslf(x12 - expected_x12) < eps1);
+    assert(abslf(x13 - expected_x13) < eps1);
+    assert(abslf(x23 - expected_x23) < eps1);
+    assert(abslf(I1 - expected_I1) < eps2);
+    assert(abslf(I2 - expected_I2) < eps2);
+    assert(abslf(I3 - expected_I3) < eps2);
+    assert(abslf(I - expected_I) < eps);
 }

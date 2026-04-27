@@ -1,5 +1,4 @@
 #include "test.h"
-#include "myutility.h"
 #include "integral.h"
 #include "root.h"
 #include "area.h"
@@ -14,7 +13,7 @@ static double f2(double x) {
     return sin(x * x) * cos(x) + x;
 }
 static double f3(double x) {
-    return (x == 0 ? 0 : log(sin(abslf(x))) * tan(x) / log(10)) - 0.25;
+    return (x == 0 ? 0 : log(sin(fabs(x))) * tan(x) / log(10)) - 0.25;
 }
 
 #ifdef NEWTON
@@ -25,7 +24,7 @@ static double df2dx(double x) {
     return 2 * x * cos(x) * cos(x * x) - sin(x) * sin(x * x) + 1;
 }
 static double df3dx(double x) {
-    return x * tan(x) / (abslf(x) * tan(abslf(x))) + log(sin(abslf(x))) / (cos(x) * cos(x));
+    return x * tan(x) / (fabs(x) * tan(fabs(x))) + log(sin(fabs(x))) / (cos(x) * cos(x));
 }
 #endif
 
@@ -36,7 +35,7 @@ void test_calculation(void) {
 
     // Integrals
     double expected_I1 = -1.4289838058025445681963979, expected_I2 = -0.3467679152384785995901733, expected_I3 = 0.16256565271856085;
-    double expected_I = abslf(expected_I1) - abslf(expected_I2) - abslf(expected_I3);
+    double expected_I = fabs(expected_I1) - fabs(expected_I2) - fabs(expected_I3);
 
     double eps = 0.00000001;
     double eps2 = eps / 3;
@@ -81,11 +80,11 @@ void test_calculation(void) {
         a12, b12, a13, b13, a23, b23, eps, false, false
     );
 
-    assert(abslf(x12 - expected_x12) < eps1);
-    assert(abslf(x13 - expected_x13) < eps1);
-    assert(abslf(x23 - expected_x23) < eps1);
-    assert(abslf(I1 - expected_I1) < eps2);
-    assert(abslf(I2 - expected_I2) < eps2);
-    assert(abslf(I3 - expected_I3) < eps2);
-    assert(abslf(I - expected_I) < eps);
+    assert(fabs(x12 - expected_x12) < eps1);
+    assert(fabs(x13 - expected_x13) < eps1);
+    assert(fabs(x23 - expected_x23) < eps1);
+    assert(fabs(I1 - expected_I1) < eps2);
+    assert(fabs(I2 - expected_I2) < eps2);
+    assert(fabs(I3 - expected_I3) < eps2);
+    assert(fabs(I - expected_I) < eps);
 }

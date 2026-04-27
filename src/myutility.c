@@ -1,5 +1,6 @@
 #include "myutility.h"
 #include <assert.h>
+#include <math.h>
 #include <stdint.h>
 
 inline size_t count_chars(const char *str, char ch) {
@@ -11,25 +12,13 @@ inline size_t count_chars(const char *str, char ch) {
     return count;
 }
 
-double abslf(double value) {
-    return value > 0 ? value : -value;
-}
-
-double minlf(double a, double b) {
-    return a < b ? a : b;
-}
-
-double maxlf(double a, double b) {
-    return a > b ? a : b;
-}
-
-double midlf(double a, double b, double c) {
-    if (a > b) { swaplf(&a, &b); }
-    if (a < c) { return minlf(b, c); }
+double fmid(double a, double b, double c) {
+    if (a > b) { fswap(&a, &b); }
+    if (a < c) { return fmin(b, c); }
     return a;
 }
 
-void swaplf(double *a, double *b) {
+void fswap(double *a, double *b) {
     double tmp = *a;
     *a = *b;
     *b = tmp;

@@ -1,5 +1,6 @@
 #include "root.h"
 #include "myutility.h"
+#include <math.h>
 
 int root_itrs = 0;
 
@@ -18,7 +19,7 @@ double root(
         prev = value;
         value = prev - (f(prev) - g(prev)) / (dfdx(prev) - dgdx(prev));
         ++root_itrs;
-    } while (abslf(value - prev) >= eps1);
+    } while (fabs(value - prev) >= eps1);
 
     return value;
 }
@@ -29,15 +30,15 @@ double root(
     double eps1
 ) {
     root_itrs = 0;
-    if (abslf(f(a) - g(a)) < eps1) { return a; }
-    if (abslf(f(b) - g(b)) < eps1) { return b; }
+    if (fabs(f(a) - g(a)) < eps1) { return a; }
+    if (fabs(f(b) - g(b)) < eps1) { return b; }
     while ((b - a) >= eps1) {
-        double middle = (a + b) / 2;
-        if ((f(a) - g(a)) * (f(middle) - g(middle)) < 0) {
-            b = middle;
+        double c = (a + b) / 2;
+        if ((f(a) - g(a)) * (f(c) - g(c)) < 0) {
+            b = c;
         }
         else {
-            a = middle;
+            a = c;
         }
         ++root_itrs;
     }

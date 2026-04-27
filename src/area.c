@@ -1,6 +1,7 @@
 #include "area.h"
 #include "integral.h"
 #include "root.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -52,11 +53,11 @@ double area(
     }
 
 
-    Segment edge1 = (Segment) { minlf(x12, x13), maxlf(x12, x13), f1 };
-    Segment edge2 = (Segment) { minlf(x12, x23), maxlf(x12, x23), f2 };
-    Segment edge3 = (Segment) { minlf(x13, x23), maxlf(x13, x23), f3 };
+    Segment edge1 = (Segment) { fmin(x12, x13), fmax(x12, x13), f1 };
+    Segment edge2 = (Segment) { fmin(x12, x23), fmax(x12, x23), f2 };
+    Segment edge3 = (Segment) { fmin(x13, x23), fmax(x13, x23), f3 };
 
-    double mid_x = midlf(x12, x13, x23);
+    double mid_x = fmid(x12, x13, x23);
 
     Segment *edge_mid = &edge1;
     if (edge_mid->a == mid_x || edge_mid->b == mid_x) { edge_mid = &edge2; }
@@ -72,5 +73,5 @@ double area(
     double I2 = integral(edge_second->f, edge_second->a, edge_second->b, eps2);
     double I3 = integral(edge_mid->f, edge_mid->a, edge_mid->b, eps2);
 
-    return abslf(I1 + I2 - I3);
+    return fabs(I1 + I2 - I3);
 }

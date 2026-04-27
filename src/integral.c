@@ -1,5 +1,6 @@
 #include "integral.h"
 #include "myutility.h"
+#include <math.h>
 
 
 double integral(func_t f, double a, double b, double eps2) {
@@ -24,7 +25,7 @@ double integral(func_t f, double a, double b, double eps2) {
         common += 2 * sum;
         value = (common + 2 * sum) * h / 6;
         k *= 2;
-    } while (abslf(value - prev) >= eps2);
+    } while (fabs(value - prev) >= eps2);
 
     return value;
 }

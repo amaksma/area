@@ -1,9 +1,9 @@
 #ifndef FUNCTION_PARSER_H
 #define FUNCTION_PARSER_H
 
+#include "function/node.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include "function/node.h"
 
 
 // Constructs an expression tree from the input string

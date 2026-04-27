@@ -1,15 +1,12 @@
+#include "area.h"
+#include "integral.h"
+#include "root.h"
+#include "test.h"
 #include <math.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include "area.h"
-#include "integral.h"
-#include "root.h"
-#include "test.h"
-
-
-
 
 
 double f1(double x) { return exp(x) + 2.0; }

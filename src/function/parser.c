@@ -1,10 +1,9 @@
 #include "function/parser.h"
-
+#include "myutility.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "myutility.h"
 
 
 Node from_string(const char *str) {

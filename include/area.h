@@ -1,8 +1,8 @@
 #ifndef AREA_H
 #define AREA_H
 
-#include <stdbool.h>
 #include "myutility.h"
+#include <stdbool.h>
 
 double area(
     func_t f1, func_t f2, func_t f3,

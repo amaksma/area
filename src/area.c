@@ -18,11 +18,11 @@ double area(
     double a12, double b12,
     double a13, double b13,
     double a23, double b23,
-    double eps,
+    double eps, double eps1_divisor,
     bool print_roots, bool print_root_itrs
 ) {
     double eps2 = eps / 3;
-    double eps1 = eps2 / 2 / 3;
+    double eps1 = eps2 / 2 / eps1_divisor;
     int root_itrs12, root_itrs13, root_itrs23;
     
 #ifdef NEWTON

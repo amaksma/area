@@ -77,7 +77,8 @@ void test_calculation(void) {
 #ifdef NEWTON
         df1dx, df2dx, df3dx,
 #endif
-        a12, b12, a13, b13, a23, b23, eps, false, false
+        a12, b12, a13, b13, a23, b23,
+        eps, 3, false, false
     );
 
     assert(fabs(x12 - expected_x12) < eps1);

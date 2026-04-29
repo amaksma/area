@@ -121,7 +121,8 @@ int main(int argc, char *argv[]) {
         df1dx, df2dx, df3dx,
 #endif
         a12, b12, a13, b13, a23, b23,
-        eps, print_roots, print_root_itrs
+        eps, 3,
+        print_roots, print_root_itrs
     );
     printf("%lf\n", I);
 

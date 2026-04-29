@@ -12,7 +12,7 @@ double area(
     double a12, double b12,
     double a13, double b13,
     double a23, double b23,
-    double eps,
+    double eps, double eps1_divisor,
     bool print_roots, bool print_root_itrs
 );
 

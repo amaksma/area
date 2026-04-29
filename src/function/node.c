@@ -4,16 +4,16 @@
 
 
 const OperatorInfo op_info[] = {
-    (OperatorInfo) {0, "pi",  "0",                      "fldpi"              },
-    (OperatorInfo) {0, "e",   "0",                      "fld qword [e]"      },
-    (OperatorInfo) {1, "sin", "f F cos *",              "fsin"               },
-    (OperatorInfo) {1, "cos", "f -1 * F sin *",         "fcos"               },
-    (OperatorInfo) {1, "tan", "f F cos F cos * /",      "fptan:fstp st0"     },
-    (OperatorInfo) {1, "ctg", "f -1 * F sin F sin * /", "fptan:fdivrp"       },
-    (OperatorInfo) {2, "+",   "f g +",                  "faddp"              },
-    (OperatorInfo) {2, "-",   "f g -",                  "fsubp"              },
-    (OperatorInfo) {2, "*",   "f G * F g * +",          "fmulp"              },
-    (OperatorInfo) {2, "/",   "f G / F g * G G * / -",  "fdivp"              },
+    (OperatorInfo) {0, "pi",  "0",                      "fldpi"          },
+    (OperatorInfo) {0, "e",   "0",                      "fld qword [e]"  },
+    (OperatorInfo) {1, "sin", "f F cos *",              "fsin"           },
+    (OperatorInfo) {1, "cos", "f -1 * F sin *",         "fcos"           },
+    (OperatorInfo) {1, "tan", "f F cos F cos * /",      "fptan:fstp st0" },
+    (OperatorInfo) {1, "ctg", "f -1 * F sin F sin * /", "fptan:fdivrp"   },
+    (OperatorInfo) {2, "+",   "f g +",                  "faddp"          },
+    (OperatorInfo) {2, "-",   "f g -",                  "fsubp"          },
+    (OperatorInfo) {2, "*",   "f G * F g * +",          "fmulp"          },
+    (OperatorInfo) {2, "/",   "f G / F g * G G * / -",  "fdivp"          },
 };
 
 const OperatorInfo *get_info(OperatorType type) {
@@ -52,7 +52,7 @@ Node *deep_copy(const Node *root) {
     assert(root);
     Node *copy = new(*root);
     // Recursively copy the child nodes
-    for (int i = 0; i < get_argc(copy); ++i) {
+    for (int i = get_argc(copy); i-- > 0; ) {
         copy->value.operator.args[i] = deep_copy(copy->value.operator.args[i]);
     }
     return copy;
@@ -81,7 +81,7 @@ Node from_operator(OperatorType type) {
 
 Node *substitute_variable(Node *root, const Node *src, char variable) {
     assert(root && src);
-    for (int i = 0; i < get_argc(root); ++i) {
+    for (int i = get_argc(root); i-- > 0; ) {
         root->value.operator.args[i] = substitute_variable(root->value.operator.args[i], src, variable);
     }
     // Replace the variable node with the copy of the provided tree

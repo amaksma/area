@@ -1,4 +1,9 @@
 #include "area.h"
+#include "function/asm_listing.h"
+#include "function/derivative.h"
+#include "function/parser.h"
+#include "function/print_tree.h"
+#include "function/simplify.h"
 #include "integral.h"
 #include "root.h"
 #include "test.h"
@@ -119,6 +124,23 @@ int main(int argc, char *argv[]) {
         eps, print_roots, print_root_itrs
     );
     printf("%lf\n", I);
+
+
+    const char fun[] = "1 2 3 4 5 6 7 8 9 10 11 + + + + + + + + + +";//"2 x 4 / tan -";
+    Node *root = construct_tree(fun);
+    print_tree(root);
+    Node *f21111 = construct_tree("x");
+    Node *f31111 = construct_tree("0.2 pi *");
+    Node *df1dx123 =  simplify(derivative(root, 'x'));
+    Node *df21111 =  simplify(derivative(f21111, 'x'));
+    Node *df31111 = simplify(derivative(f31111, 'x'));
+    write_listing(stdout, root, f21111, f31111, df1dx123, df21111, df31111);
+    destruct_tree(df31111);
+    destruct_tree(df21111);
+    destruct_tree(df1dx123);
+    destruct_tree(f31111);
+    destruct_tree(f21111);
+    destruct_tree(root);
 
     return 0;
 }
